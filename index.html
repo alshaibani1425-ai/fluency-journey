@@ -4,6 +4,386 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>رحلة الطلاقة - مسار تطوير اللغة الإنجليزية</title>
+    <!-- استدعاء مكتبة Tailwind CSS للتصميم -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- استدعاء خط عربي حديث من جوجل -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8fafc;
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-blue-200">
+
+    <!-- رأس الصفحة -->
+    <header class="bg-gradient-to-l from-blue-900 to-blue-700 text-white py-12 px-4 shadow-lg text-center rounded-b-3xl mb-8 relative">
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- مساحة اسم المستخدم التفاعلية -->
+            <div class="flex justify-center mb-6 min-h-[36px]">
+                <!-- عرض الاسم -->
+                <div id="user-greeting-section" class="inline-flex items-center bg-white/10 hover:bg-white/20 transition-all duration-300 px-5 py-2 rounded-full cursor-pointer backdrop-blur-sm border border-white/20 shadow-sm" onclick="editUserName()" title="اضغط لتعديل الاسم">
+                    <span id="user-name-display" class="font-bold text-lg">مرحباً بك! 👋</span>
+                    <svg class="w-4 h-4 mr-2 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                </div>
+                <!-- إدخال الاسم (مخفي افتراضياً) -->
+                <div id="user-name-input-section" class="hidden flex items-center bg-white rounded-full overflow-hidden shadow-lg p-1 border-2 border-blue-400">
+                    <input type="text" id="user-name-input" placeholder="ما اسمك يا بطل؟" class="px-4 py-1.5 text-slate-800 text-sm outline-none w-48 bg-transparent text-center font-bold placeholder-slate-400" onkeypress="if(event.key === 'Enter') saveUserName()">
+                    <button onclick="saveUserName()" class="bg-emerald-500 text-white px-5 py-1.5 text-sm rounded-full hover:bg-emerald-600 font-bold transition-colors">حفظ</button>
+                </div>
+            </div>
+
+            <span class="bg-blue-100 text-blue-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">النسخة 2.1</span>
+            <h1 class="text-4xl font-extrabold mt-4 mb-2">رحلة الطلاقة: خطة تطوير اللغة الإنجليزية 🚀</h1>
+            <p class="text-blue-100 text-lg">طالب مرحلة رابعة - هندسة | تركيز حصري على اللكنة البريطانية 🇬🇧</p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 pb-12">
+
+        <!-- قسم مستوى التقدم (العداد) -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl shadow-md p-6 text-white relative overflow-hidden">
+                <!-- رسمة زخرفية في الخلفية -->
+                <div class="absolute -left-10 -top-10 opacity-20">
+                    <svg width="150" height="150" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                </div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-center md:text-right mb-4 md:mb-0">
+                        <h2 class="text-xl font-bold mb-1 opacity-90">مستوى التقدم الحالي</h2>
+                        <div class="text-4xl font-extrabold flex items-baseline justify-center md:justify-start">
+                            <span id="current-day-display">اليوم 1</span>
+                            <span class="text-lg font-normal opacity-75 mr-2">من التحدي</span>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2">
+                        <div class="flex justify-between text-sm mb-1 font-medium">
+                            <span>البداية</span>
+                            <span id="streak-display">🔥 سلسلة متتالية: 0 أيام</span>
+                        </div>
+                        <div class="w-full bg-emerald-700/50 rounded-full h-3 mb-2">
+                            <div id="progress-bar" class="bg-white h-3 rounded-full shadow-inner" style="width: 0%"></div>
+                        </div>
+                        <p class="text-xs text-center opacity-80">أكمل مهام اليوم واضغط "يوم جديد" لزيادة مستواك!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم المصادر المعتمدة -->
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
+                <svg class="w-7 h-7 ml-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                المصادر المعتمدة (اضغط للذهاب للموقع)
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Reading -->
+                <a href="https://www.newsinlevels.com/" target="_blank" class="block bg-white p-5 rounded-xl border border-slate-200 shadow-sm card-hover border-r-4 border-r-emerald-500 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-emerald-50 opacity-0 group-hover:opacity-100 transition-opacity z-0"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center mb-2">
+                            <span class="text-3xl ml-3">📖</span>
+                            <h3 class="font-bold text-lg text-slate-800">مهارة القراءة</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm font-medium">News in Levels</p>
+                    </div>
+                </a>
+
+                <!-- Listening -->
+                <a href="https://teacherluke.co.uk/" target="_blank" class="block bg-white p-5 rounded-xl border border-slate-200 shadow-sm card-hover border-r-4 border-r-purple-500 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-purple-50 opacity-0 group-hover:opacity-100 transition-opacity z-0"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center mb-2">
+                            <span class="text-3xl ml-3">🎧</span>
+                            <h3 class="font-bold text-lg text-slate-800">الاستماع (بريطاني)</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm font-medium">Luke's English Podcast & BBC</p>
+                    </div>
+                </a>
+
+                <!-- Speaking -->
+                <a href="https://www.youtube.com/c/EnglishLikeANative" target="_blank" class="block bg-white p-5 rounded-xl border border-slate-200 shadow-sm card-hover border-r-4 border-r-orange-500 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-orange-50 opacity-0 group-hover:opacity-100 transition-opacity z-0"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center mb-2">
+                            <span class="text-3xl ml-3">🗣️</span>
+                            <h3 class="font-bold text-lg text-slate-800">التحدث (Shadowing)</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm font-medium">English Like A Native</p>
+                    </div>
+                </a>
+
+                <!-- Writing -->
+                <a href="https://writeandimprove.com/" target="_blank" class="block bg-white p-5 rounded-xl border border-slate-200 shadow-sm card-hover border-r-4 border-r-blue-500 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity z-0"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center mb-2">
+                            <span class="text-3xl ml-3">✍️</span>
+                            <h3 class="font-bold text-lg text-slate-800">مهارة الكتابة</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm font-medium">Write & Improve</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- قسم قائمة المهام اليومية (Interactive Tracker) -->
+        <section class="mb-10">
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-200 p-6">
+                <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                    <h2 class="text-2xl font-bold flex items-center text-slate-800">
+                        <span class="text-3xl ml-2">✅</span> متتبع الإنجاز اليومي
+                    </h2>
+                    <div class="flex gap-2">
+                        <button onclick="resetCounter()" class="text-xs text-slate-500 hover:text-slate-700 font-medium px-2 py-2 transition-colors" title="إعادة التحدي من اليوم الأول">
+                            إعادة العداد لـ 0
+                        </button>
+                        <button onclick="finishDay()" class="text-xs md:text-sm text-emerald-700 hover:text-emerald-900 font-bold bg-emerald-100 hover:bg-emerald-200 px-4 py-2 rounded-full transition-colors flex items-center">
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            إنهاء اليوم الحالي
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- المهمة الأولى -->
+                    <label class="flex items-center p-3 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                        <input type="checkbox" id="task-reading" onchange="toggleTask('task-reading')" class="w-6 h-6 text-emerald-600 bg-slate-100 border-slate-300 rounded focus:ring-emerald-500 focus:ring-2 cursor-pointer">
+                        <span id="label-task-reading" class="ml-4 mr-4 text-lg font-medium text-slate-700 transition-all duration-300">قراءة خبر واستخراج 3 كلمات (الصباح)</span>
+                    </label>
+
+                    <!-- المهمة الثانية -->
+                    <label class="flex items-center p-3 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                        <input type="checkbox" id="task-listening" onchange="toggleTask('task-listening')" class="w-6 h-6 text-purple-600 bg-slate-100 border-slate-300 rounded focus:ring-purple-500 focus:ring-2 cursor-pointer">
+                        <span id="label-task-listening" class="ml-4 mr-4 text-lg font-medium text-slate-700 transition-all duration-300">استماع للبودكاست البريطاني (العصر)</span>
+                    </label>
+
+                    <!-- المهمة الثالثة -->
+                    <label class="flex items-center p-3 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                        <input type="checkbox" id="task-speaking" onchange="toggleTask('task-speaking')" class="w-6 h-6 text-orange-600 bg-slate-100 border-slate-300 rounded focus:ring-orange-500 focus:ring-2 cursor-pointer">
+                        <span id="label-task-speaking" class="ml-4 mr-4 text-lg font-medium text-slate-700 transition-all duration-300">تدريب التظليل Shadowing (المساء)</span>
+                    </label>
+
+                    <!-- المهمة الرابعة -->
+                    <label class="flex items-center p-3 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                        <input type="checkbox" id="task-writing" onchange="toggleTask('task-writing')" class="w-6 h-6 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer">
+                        <span id="label-task-writing" class="ml-4 mr-4 text-lg font-medium text-slate-700 transition-all duration-300">كتابة فقرة قصيرة (مرتين أسبوعياً فقط)</span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الجداول -->
+        <section class="space-y-8">
+            
+            <!-- المرحلة الأولى -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-100">
+                <div class="bg-amber-100 px-6 py-4 border-b border-amber-200 flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-amber-900">المرحلة الأولى: التأسيس قبل الدوام</h2>
+                    <span class="bg-amber-200 text-amber-800 text-xs font-bold px-2 py-1 rounded">حتى 19 أيلول</span>
+                </div>
+                <div class="p-6">
+                    <ul class="space-y-6">
+                        <li class="flex items-start">
+                            <div class="bg-blue-50 p-3 rounded-full ml-4">☀️</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-800 mb-1">الصباح <span class="text-sm font-normal text-slate-500">(10 - 15 دقيقة)</span></h4>
+                                <p class="text-slate-600">قراءة خبر واحد من <span class="font-semibold text-blue-600">News in Levels</span>، واستخراج 3 كلمات جديدة وكتابتها في دفترك.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="bg-purple-50 p-3 rounded-full ml-4">☕</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-800 mb-1">العصر / وقت الفراغ <span class="text-sm font-normal text-slate-500">(30 دقيقة)</span></h4>
+                                <p class="text-slate-600">الاستماع العفوي إلى <span class="font-semibold text-purple-600">Luke's English Podcast</span> (لإتقان اللهجة البريطانية) أثناء القيام بنشاط آخر (المشي، ترتيب الغرفة).</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="bg-orange-50 p-3 rounded-full ml-4">🌙</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-800 mb-1">المساء <span class="text-sm font-normal text-slate-500">(10 - 15 دقيقة)</span></h4>
+                                <p class="text-slate-600">تدريب الـ <span class="font-semibold text-orange-600">Shadowing</span> مع قناة English Like A Native. استمع وقلّد النطق فوراً.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start border-t pt-4">
+                            <div class="bg-emerald-50 p-3 rounded-full ml-4">📅</div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-800 mb-1">مرتين أسبوعياً <span class="text-sm font-normal text-slate-500">(مثلاً: الجمعة والثلاثاء)</span></h4>
+                                <p class="text-slate-600">كتابة فقرة بسيطة في موقع <span class="font-semibold text-emerald-600">Write & Improve</span> بدلاً من تمرين المساء، ومراجعة الأخطاء المصححة.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="text-center pb-8 text-slate-500 text-sm">
+        <p>تم التصميم للالتزام وتحقيق الأهداف 👷‍♂️ | بالتوفيق في المرحلة الرابعة!</p>
+    </footer>
+
+    <!-- سكربت حفظ المهام والأيام -->
+    <script>
+        // مصفوفة بأسماء المهام
+        const tasks = ['task-reading', 'task-listening', 'task-speaking', 'task-writing'];
+        let currentDay = 1;
+
+        // دالة تشغيل عند تحميل الصفحة
+        function initApp() {
+            // تحميل اسم المستخدم
+            const savedName = localStorage.getItem('engTracker_userName');
+            if(savedName) {
+                document.getElementById('user-name-display').innerText = `مرحباً بك يا ${savedName} 👋`;
+            } else {
+                // إذا كان مستخدماً جديداً، نعرض حقل إدخال الاسم
+                document.getElementById('user-greeting-section').classList.add('hidden');
+                document.getElementById('user-name-input-section').classList.remove('hidden');
+                document.getElementById('user-name-input-section').classList.add('flex');
+            }
+
+            // تحميل المهام
+            tasks.forEach(taskId => {
+                const checkbox = document.getElementById(taskId);
+                const isChecked = localStorage.getItem('engTracker_' + taskId) === 'true';
+                checkbox.checked = isChecked;
+                updateTextStyle(taskId, isChecked);
+            });
+
+            // تحميل العداد
+            const savedDay = localStorage.getItem('engTracker_day');
+            if(savedDay) {
+                currentDay = parseInt(savedDay);
+            } else {
+                localStorage.setItem('engTracker_day', currentDay);
+            }
+            updateDashboard();
+        }
+
+        // تحديث لوحة التحكم (العداد وشريط التقدم)
+        function updateDashboard() {
+            document.getElementById('current-day-display').innerText = `اليوم ${currentDay}`;
+            document.getElementById('streak-display').innerText = `🔥 سلسلة متتالية: ${currentDay - 1} أيام`;
+            
+            // حساب نسبة مئوية وهمية للتحفيز (كل 30 يوم تعتبر 100% من المرحلة)
+            let progressPercent = ((currentDay - 1) % 30) / 30 * 100;
+            if(currentDay > 1 && (currentDay - 1) % 30 === 0) progressPercent = 100; // اكتمال شهر
+            
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+        }
+
+        // دالة إنهاء اليوم والانتقال لليوم التالي
+        function finishDay() {
+            // التحقق من إكمال المهام الأساسية على الأقل
+            const isReadingDone = document.getElementById('task-reading').checked;
+            const isListeningDone = document.getElementById('task-listening').checked;
+            
+            if(!isReadingDone && !isListeningDone) {
+                alert('الرجاء إكمال مهمة واحدة على الأقل قبل إنهاء اليوم للاستمرار في السلسلة!');
+                return;
+            }
+
+            if(confirm(`هل أنت مستعد للانتقال إلى اليوم ${currentDay + 1}؟ \nسيتم تصفير المهام للبدء من جديد غداً.`)) {
+                // زيادة العداد
+                currentDay++;
+                localStorage.setItem('engTracker_day', currentDay);
+                updateDashboard();
+
+                // تصفير المهام
+                tasks.forEach(taskId => {
+                    localStorage.setItem('engTracker_' + taskId, 'false');
+                    const checkbox = document.getElementById(taskId);
+                    checkbox.checked = false;
+                    updateTextStyle(taskId, false);
+                });
+            }
+        }
+
+        // دالة تصفير العداد بالكامل
+        function resetCounter() {
+            if(confirm('تحذير: هل أنت متأكد من تصفير عداد الأيام والبدء من اليوم الأول؟')) {
+                currentDay = 1;
+                localStorage.setItem('engTracker_day', currentDay);
+                updateDashboard();
+                
+                tasks.forEach(taskId => {
+                    localStorage.setItem('engTracker_' + taskId, 'false');
+                    const checkbox = document.getElementById(taskId);
+                    checkbox.checked = false;
+                    updateTextStyle(taskId, false);
+                });
+            }
+        }
+
+        // دالة يتم تشغيلها عند الضغط على أي مربع اختيار
+        function toggleTask(taskId) {
+            const checkbox = document.getElementById(taskId);
+            localStorage.setItem('engTracker_' + taskId, checkbox.checked);
+            updateTextStyle(taskId, checkbox.checked);
+        }
+
+        // دالة لتغيير شكل النص (وضع خط عليه عند الاكتمال)
+        function updateTextStyle(taskId, isChecked) {
+            const label = document.getElementById('label-' + taskId);
+            if (isChecked) {
+                label.classList.add('line-through', 'text-slate-400');
+                label.classList.remove('text-slate-700');
+            } else {
+                label.classList.remove('line-through', 'text-slate-400');
+                label.classList.add('text-slate-700');
+            }
+        }
+
+        // --- دوال اسم المستخدم ---
+        function saveUserName() {
+            const nameInput = document.getElementById('user-name-input').value.trim();
+            if(nameInput !== '') {
+                localStorage.setItem('engTracker_userName', nameInput);
+                document.getElementById('user-name-display').innerText = `مرحباً بك يا ${nameInput} 👋`;
+                
+                // إخفاء حقل الإدخال وإظهار رسالة الترحيب
+                document.getElementById('user-name-input-section').classList.add('hidden');
+                document.getElementById('user-name-input-section').classList.remove('flex');
+                document.getElementById('user-greeting-section').classList.remove('hidden');
+            } else {
+                alert('الرجاء كتابة اسمك أولاً!');
+            }
+        }
+
+        function editUserName() {
+            const currentName = localStorage.getItem('engTracker_userName') || '';
+            document.getElementById('user-name-input').value = currentName;
+            
+            // إخفاء رسالة الترحيب وإظهار حقل الإدخال
+            document.getElementById('user-greeting-section').classList.add('hidden');
+            document.getElementById('user-name-input-section').classList.remove('hidden');
+            document.getElementById('user-name-input-section').classList.add('flex');
+            document.getElementById('user-name-input').focus();
+        }
+
+        // بدء التطبيق
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلة الطلاقة - مسار تطوير اللغة الإنجليزية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- إعداد Tailwind للوضع الليلي -->
     <script>
